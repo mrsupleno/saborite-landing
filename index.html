@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saborite - Gestão completa para restaurantes e delivery</title>
+    <meta name="description" content="Controle mesas, pedidos, delivery, caixa e fidelização em uma única plataforma. Pare de perder dinheiro com o iFood.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --blue-primary: #1E6FFF;
+            --blue-dark: #1557CC;
+            --blue-light: #E6F0FF;
+            --white: #FFFFFF;
+            --gray-bg: #F8F9FA;
+            --gray-light: #E9ECEF;
+            --text-primary: #1A1A2E;
+            --text-secondary: #6B7280;
+            --border-color: #DEE2E6;
+            --success: #10B981;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--white);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            background: var(--white);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--blue-primary);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--blue-primary);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-primary);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 0.875rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--blue-primary);
+            color: var(--white);
+            box-shadow: 0 4px 12px rgba(30, 111, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--blue-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(30, 111, 255, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--blue-primary);
+            border: 2px solid var(--blue-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--blue-light);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 5rem 0 4rem;
+            background: linear-gradient(135deg, var(--white) 0%, var(--gray-bg) 100%);
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+        }
+
+        .hero-text p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        .hero-ctas {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-image {
+            position: relative;
+            text-align: center;
+        }
+
+        .hero-emoji {
+            font-size: 15rem;
+            line-height: 1;
+            filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.1));
+        }
+
+        /* Badges Section */
+        .badges {
+            background: var(--white);
+            padding: 3rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .badge-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--gray-bg);
+            border-radius: 16px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .badge-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .badge-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .badge-item h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Stats Section */
+        .stats {
+            background: var(--blue-primary);
+            color: var(--white);
+            padding: 4rem 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            text-align: center;
+        }
+
+        .stat-item h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-item p {
+            font-size: 1.125rem;
+            opacity: 0.95;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 5rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 4rem;
+        }
+
+        .section-header h2 {
+            font-size: clamp(2rem, 4vw, 2.75rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .section-header p {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+        }
+
+        /* Features Tabs */
+        .features {
+            background: var(--gray-bg);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid var(--border-color);
+            background: var(--white);
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--text-primary);
+        }
+
+        .tab-btn.active {
+            background: var(--blue-primary);
+            color: var(--white);
+            border-color: var(--blue-primary);
+        }
+
+        .tab-btn:hover {
+            border-color: var(--blue-primary);
+            color: var(--blue-primary);
+        }
+
+        .tab-btn.active:hover {
+            color: var(--white);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--blue-primary);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Pricing */
+        .pricing {
+            background: var(--white);
+        }
+
+        .pricing-toggle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .toggle-label {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            background: var(--gray-light);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .toggle-switch.active {
+            background: var(--blue-primary);
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 24px;
+            height: 24px;
+            background: var(--white);
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(30px);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .pricing-card {
+            background: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--blue-primary);
+        }
+
+        .pricing-card.featured {
+            border-color: var(--blue-primary);
+            box-shadow: 0 0 0 3px var(--blue-light);
+        }
+
+        .pricing-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--blue-primary);
+            color: var(--white);
+            padding: 0.35rem 1.25rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 700;
+        }
+
+        .pricing-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .pricing-card .price {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--blue-primary);
+            margin: 1rem 0;
+        }
+
+        .pricing-card .price-period {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin: 2rem 0;
+            text-align: left;
+        }
+
+        .pricing-features li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--gray-light);
+            color: var(--text-secondary);
+        }
+
+        .pricing-features li:last-child {
+            border-bottom: none;
+        }
+
+        .pricing-features li::before {
+            content: "✓";
+            color: var(--success);
+            font-weight: bold;
+            margin-right: 0.75rem;
+        }
+
+        /* FAQ */
+        .faq {
+            background: var(--gray-bg);
+        }
+
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: var(--white);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .faq-question {
+            width: 100%;
+            padding: 1.5rem;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-primary);
+        }
+
+        .faq-question:hover {
+            color: var(--blue-primary);
+        }
+
+        .faq-icon {
+            font-size: 1.5rem;
+            transition: transform 0.3s;
+            color: var(--blue-primary);
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+        }
+
+        .faq-answer p {
+            padding: 0 1.5rem 1.5rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--text-primary);
+            color: var(--white);
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--blue-primary);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-section a:hover {
+            color: var(--white);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .hero-emoji {
+                font-size: 8rem;
+            }
+
+            .hero-ctas {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            .badges-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding-bottom: 1rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <a href="/" class="logo">🍽️ SABORITE</a>
+            <ul class="nav-links">
+                <li><a href="#recursos">Recursos</a></li>
+                <li><a href="#planos">Planos</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="/freela" class="btn btn-primary">Testar Grátis</a></li>
+            </ul>
+            <button class="mobile-menu-btn" aria-label="Menu">☰</button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content animate-in">
+                <div class="hero-text">
+                    <h1>Gestão completa para restaurantes e delivery</h1>
+                    <p>Controle mesas, pedidos, delivery, caixa e fidelização em uma única plataforma. Pare de perder dinheiro com o iFood e tenha seu próprio canal de vendas.</p>
+                    <div class="hero-ctas">
+                        <a href="/freela" class="btn btn-primary">Quero testar grátis</a>
+                        <a href="#recursos" class="btn btn-secondary">Ver funcionalidades</a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="hero-emoji">🍕</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Badges Section -->
+    <section class="badges">
+        <div class="container">
+            <div class="badges-grid">
+                <div class="badge-item">
+                    <div class="badge-icon">💬</div>
+                    <h3>Pedidos pelo WhatsApp</h3>
+                </div>
+                <div class="badge-item">
+                    <div class="badge-icon">📱</div>
+                    <h3>Cardápio digital</h3>
+                </div>
+                <div class="badge-item">
+                    <div class="badge-icon">💳</div>
+                    <h3>Pix e cartão integrados</h3>
+                </div>
+                <div class="badge-item">
+                    <div class="badge-icon">🚚</div>
+                    <h3>Controle de entregas</h3>
+                </div>
+                <div class="badge-item">
+                    <div class="badge-icon">📄</div>
+                    <h3>NFC-e e NF-e</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h2>+50</h2>
+                    <p>Restaurantes ativos</p>
+                </div>
+                <div class="stat-item">
+                    <h2>+10 mil</h2>
+                    <p>Pedidos processados</p>
+                </div>
+                <div class="stat-item">
+                    <h2>0% taxa</h2>
+                    <p>Alternativa ao iFood sem pagar 27%</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="recursos" class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Tudo que você precisa em um só lugar</h2>
+                <p>Funcionalidades completas para gerenciar seu restaurante ou delivery</p>
+            </div>
+
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="vendas">📊 Vendas</button>
+                <button class="tab-btn" data-tab="gestao">⚙️ Gestão</button>
+                <button class="tab-btn" data-tab="fidelizacao">❤️ Fidelização</button>
+                <button class="tab-btn" data-tab="marketing">📢 Marketing</button>
+                <button class="tab-btn" data-tab="fiscal">📋 Fiscal</button>
+            </div>
+
+            <!-- Vendas Tab -->
+            <div class="tab-content active" id="vendas">
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">💻</div>
+                        <h3>PDV completo</h3>
+                        <p>Sistema de ponto de venda completo para balcão e delivery</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📱</div>
+                        <h3>Cardápio digital</h3>
+                        <p>Seu link personalizado para receber pedidos online</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📷</div>
+                        <h3>QR Code</h3>
+                        <p>Clientes fazem pedidos escaneando QR Code na mesa</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🚀</div>
+                        <h3>App de delivery</h3>
+                        <p>Seu próprio aplicativo de delivery personalizado</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">💬</div>
+                        <h3>WhatsApp PDV</h3>
+                        <p>Receba e gerencie pedidos pelo WhatsApp</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎁</div>
+                        <h3>Combos e upsell</h3>
+                        <p>Crie combos e sugestões para aumentar ticket médio</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📅</div>
+                        <h3>Agendamento de pedidos</h3>
+                        <p>Clientes podem agendar pedidos para horários futuros</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gestão Tab -->
+            <div class="tab-content" id="gestao">
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">💰</div>
+                        <h3>Controle de caixa</h3>
+                        <p>Abertura, fechamento e sangria de caixa simplificados</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">👨‍🍳</div>
+                        <h3>Monitor de preparo</h3>
+                        <p>Tela para cozinha acompanhar pedidos em tempo real</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">👨‍💼</div>
+                        <h3>App do garçom</h3>
+                        <p>Garçons fazem pedidos direto pelo celular</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🏍️</div>
+                        <h3>App do entregador</h3>
+                        <p>Gerenciamento completo de entregas e roteirização</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🪑</div>
+                        <h3>Controle de mesas</h3>
+                        <p>Gerencie ocupação e pedidos por mesa</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎫</div>
+                        <h3>Comanda individual</h3>
+                        <p>Cada cliente pode pagar sua conta separadamente</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fidelização Tab -->
+            <div class="tab-content" id="fidelizacao">
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">⭐</div>
+                        <h3>Programa de fidelidade</h3>
+                        <p>Sistema de pontos para recompensar clientes fiéis</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">💵</div>
+                        <h3>Cashback</h3>
+                        <p>Devolva parte do valor em crédito para próxima compra</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎟️</div>
+                        <h3>Cupom de desconto</h3>
+                        <p>Crie cupons personalizados para campanhas</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🤝</div>
+                        <h3>Indique e ganhe</h3>
+                        <p>Clientes ganham bônus ao indicar amigos</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎰</div>
+                        <h3>Roleta da sorte</h3>
+                        <p>Gamificação para engajar clientes com prêmios</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Marketing Tab -->
+            <div class="tab-content" id="marketing">
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">📲</div>
+                        <h3>Disparador WhatsApp</h3>
+                        <p>Envie promoções e novidades por WhatsApp</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔄</div>
+                        <h3>Recuperador de clientes</h3>
+                        <p>Reative clientes inativos automaticamente</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>Google Analytics</h3>
+                        <p>Integração completa para análise de dados</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📱</div>
+                        <h3>Pixel Facebook</h3>
+                        <p>Rastreie conversões e otimize anúncios</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📅</div>
+                        <h3>Campanhas agendadas</h3>
+                        <p>Agende disparos para datas e horários específicos</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fiscal Tab -->
+            <div class="tab-content" id="fiscal">
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🧾</div>
+                        <h3>NFC-e</h3>
+                        <p>Emissão de nota fiscal de consumidor eletrônica</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📄</div>
+                        <h3>NF-e</h3>
+                        <p>Emissão de nota fiscal eletrônica completa</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>Sintegra</h3>
+                        <p>Arquivo fiscal para declaração estadual</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📑</div>
+                        <h3>SPED Fiscal</h3>
+                        <p>Sistema Público de Escrituração Digital</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔐</div>
+                        <h3>Certificado Digital A1</h3>
+                        <p>Suporte completo para certificado digital</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="planos" class="pricing">
+        <div class="container">
+            <div class="section-header">
+                <h2>Planos que cabem no seu bolso</h2>
+                <p>Escolha o plano ideal para o tamanho do seu negócio</p>
+            </div>
+
+            <div class="pricing-toggle">
+                <span class="toggle-label">Mensal</span>
+                <div class="toggle-switch" id="pricingToggle">
+                    <div class="toggle-slider"></div>
+                </div>
+                <span class="toggle-label">Anual (economize até 17%)</span>
+            </div>
+
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Solo</h3>
+                    <div class="price">
+                        <span class="monthly-price">R$ 29</span>
+                        <span class="annual-price" style="display: none;">R$ 299</span>
+                        <span class="price-period">/mês</span>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>1 usuário</li>
+                        <li>Cardápio digital</li>
+                        <li>Pedidos por WhatsApp</li>
+                        <li>Controle de caixa</li>
+                        <li>Suporte por email</li>
+                    </ul>
+                    <a href="/freela" class="btn btn-secondary">Começar agora</a>
+                </div>
+
+                <div class="pricing-card featured">
+                    <div class="pricing-badge">Mais Popular</div>
+                    <h3>Equipe</h3>
+                    <div class="price">
+                        <span class="monthly-price">R$ 69</span>
+                        <span class="annual-price" style="display: none;">R$ 699</span>
+                        <span class="price-period">/mês</span>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>Até 5 usuários</li>
+                        <li>Tudo do Solo +</li>
+                        <li>App do garçom</li>
+                        <li>Controle de mesas</li>
+                        <li>Programa de fidelidade</li>
+                        <li>Suporte prioritário</li>
+                    </ul>
+                    <a href="/freela" class="btn btn-primary">Começar agora</a>
+                </div>
+
+                <div class="pricing-card">
+                    <h3>Empresarial</h3>
+                    <div class="price">
+                        <span class="monthly-price">R$ 149</span>
+                        <span class="annual-price" style="display: none;">R$ 1.499</span>
+                        <span class="price-period">/mês</span>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>Usuários ilimitados</li>
+                        <li>Tudo do Equipe +</li>
+                        <li>Multi-lojas</li>
+                        <li>NFC-e e NF-e</li>
+                        <li>API completa</li>
+                        <li>Gerente de conta dedicado</li>
+                    </ul>
+                    <a href="/freela" class="btn btn-secondary">Começar agora</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="faq">
+        <div class="container">
+            <div class="section-header">
+                <h2>Perguntas frequentes</h2>
+                <p>Tire suas dúvidas sobre o Saborite</p>
+            </div>
+
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>O Saborite funciona sem internet?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>O Saborite possui modo offline parcial para operações essenciais como registro de pedidos e vendas. Quando a internet voltar, os dados são sincronizados automaticamente. Algumas funcionalidades como pagamento online e emissão de nota fiscal requerem conexão.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Preciso de equipamento especial?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Não! O Saborite funciona em qualquer celular, tablet ou computador com navegador. Você pode começar hoje mesmo com os equipamentos que já tem. Para impressão de pedidos, uma impressora térmica USB é opcional.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Como funciona o free trial?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Você tem 7 dias grátis para testar todas as funcionalidades do plano escolhido, sem precisar cadastrar cartão de crédito. Após o período de teste, você decide se quer continuar e escolhe a forma de pagamento.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Tem integração com iFood?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Sim! Você pode integrar o Saborite com iFood e outros apps de delivery para centralizar todos os pedidos em um único sistema, facilitando a gestão da cozinha e evitando erros.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Quanto tempo leva para instalar?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>A configuração inicial leva menos de 1 hora. Você cadastra seus produtos, configura formas de pagamento e já pode começar a vender. Nossa equipe oferece suporte completo durante todo o processo de onboarding.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Saborite</h3>
+                    <p>Gestão completa para restaurantes e delivery. Pare de perder dinheiro e tenha seu próprio canal de vendas.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Produto</h3>
+                    <ul>
+                        <li><a href="#recursos">Funcionalidades</a></li>
+                        <li><a href="#planos">Planos</a></li>
+                        <li><a href="/freela">Testar grátis</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Suporte</h3>
+                    <ul>
+                        <li><a href="mailto:contato@saborite.com.br">Contato</a></li>
+                        <li><a href="#">Central de ajuda</a></li>
+                        <li><a href="#">Status do sistema</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="#">Termos de uso</a></li>
+                        <li><a href="#">Política de privacidade</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Saborite. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Tab switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabName = btn.dataset.tab;
+
+                // Remove active from all buttons and contents
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+                // Add active to clicked button and corresponding content
+                btn.classList.add('active');
+                document.getElementById(tabName).classList.add('active');
+            });
+        });
+
+        // FAQ accordion
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const faqItem = question.parentElement;
+                const isActive = faqItem.classList.contains('active');
+
+                // Close all items
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+
+                // Open clicked item if it wasn't active
+                if (!isActive) {
+                    faqItem.classList.add('active');
+                }
+            });
+        });
+
+        // Pricing toggle
+        const pricingToggle = document.getElementById('pricingToggle');
+        pricingToggle.addEventListener('click', () => {
+            pricingToggle.classList.toggle('active');
+            const isAnnual = pricingToggle.classList.contains('active');
+
+            document.querySelectorAll('.monthly-price').forEach(price => {
+                price.style.display = isAnnual ? 'none' : 'inline';
+            });
+
+            document.querySelectorAll('.annual-price').forEach(price => {
+                price.style.display = isAnnual ? 'inline' : 'none';
+            });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
